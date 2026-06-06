@@ -1,9 +1,17 @@
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
-  experimental: {
-    serverComponentsExternalPackages: ['@better-auth/kysely-adapter'],
+  turbopack: {
+    root: __dirname,
+    resolveAlias: {
+      '@better-auth/kysely-adapter': './src/lib/stubs/better-auth-kysely-adapter.js',
+    },
   },
 };
 

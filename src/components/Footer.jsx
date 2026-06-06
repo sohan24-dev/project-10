@@ -1,103 +1,168 @@
-"use client";
-
 import Link from "next/link";
-import { Icon } from "@gravity-ui/uikit";
 import {
-    LogoFacebook,
-    LogoLinkedin,
-    LogoGithub
+  LogoFacebook,
+  LogoLinkedin,
+  LogoGithub,
 } from "@gravity-ui/icons";
 
+
 export default function Footer() {
-    return (
-        <footer className="bg-[#05060a] text-gray-400 pt-16 pb-8 px-6 md:px-12">
-            <div className="max-w-7xl mx-auto">
+  return (
+    <footer className="border-t border-white/10 bg-black text-white">
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+        {/* TOP SECTION */}
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+          {/* LEFT */}
+          <div className="space-y-6">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-500">
+                <span className="text-xl font-bold text-white">P</span>
+              </div>
 
-                {/* Top Section */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-10 border-b border-white/10">
+              <div className="leading-none">
+                <h2 className="text-xl font-bold">Hiring</h2>
+                <h2 className="text-xl font-bold">Loop</h2>
+              </div>
+            </Link>
 
-                    {/* Logo + Description */}
-                    <div>
-                        <h1 className="text-2xl font-bold text-white">
-                            hire<span className="text-blue-500">loop</span>
-                        </h1>
+            {/* Description */}
+            <p className="max-w-xs leading-8 text-gray-400">
+              The AI-native career platform. Built for people who take
+              their work seriously.
+            </p>
 
-                        <p className="mt-4 text-sm leading-relaxed text-gray-500">
-                            The AI-native career platform. Built for people who take their
-                            work seriously.
-                        </p>
+            {/* Social Icons */}
+            <div className="flex items-center gap-4 pt-6">
+              <Link
+                href="#"
+                className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 transition hover:bg-violet-600"
+              >
+                <LogoFacebook className="h-5 w-5" />
+              </Link>
 
-                        {/* Social Icons */}
-                        <div className="flex items-center gap-3 mt-5">
-                            <Link
-                                href="#"
-                                className="w-9 h-9 flex items-center justify-center rounded-md bg-white/5 hover:bg-white/10 transition"
-                            >
-                                <Icon data={LogoFacebook} size={16} />
-                            </Link>
+              <Link
+                href="#"
+                className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-600 transition hover:bg-violet-500"
+              >
+                <LogoGithub className="h-5 w-5" />
+              </Link>
 
-                            <Link
-                                href="#"
-                                className="w-9 h-9 flex items-center justify-center rounded-md bg-white/5 hover:bg-white/10 transition"
-                            >
-                                <Icon data={LogoGithub} size={16} />
-                            </Link>
-
-                            <Link
-                                href="#"
-                                className="w-9 h-9 flex items-center justify-center rounded-md bg-white/5 hover:bg-white/10 transition"
-                            >
-                                <Icon data={LogoLinkedin} size={16} />
-                            </Link>
-                        </div>
-                    </div>
-
-                    {/* Product */}
-                    <div>
-                        <h3 className="text-white font-semibold mb-4">Product</h3>
-                        <ul className="space-y-3 text-sm">
-                            <li><Link href="#" className="hover:text-white">Job discovery</Link></li>
-                            <li><Link href="#" className="hover:text-white">Worker AI</Link></li>
-                            <li><Link href="#" className="hover:text-white">Companies</Link></li>
-                            <li><Link href="#" className="hover:text-white">Salary data</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Navigations */}
-                    <div>
-                        <h3 className="text-white font-semibold mb-4">Navigations</h3>
-                        <ul className="space-y-3 text-sm">
-                            <li><Link href="#" className="hover:text-white">Help center</Link></li>
-                            <li><Link href="#" className="hover:text-white">Career library</Link></li>
-                            <li><Link href="#" className="hover:text-white">Contact</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Resources */}
-                    <div>
-                        <h3 className="text-white font-semibold mb-4">Resources</h3>
-                        <ul className="space-y-3 text-sm">
-                            <li><Link href="#" className="hover:text-white">Brand Guideline</Link></li>
-                            <li><Link href="#" className="hover:text-white">Newsroom</Link></li>
-                        </ul>
-                    </div>
-                </div>
-
-                {/* Bottom Section */}
-                <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 text-xs text-gray-500">
-
-                    <p>Copyright 2024 — Programming Hero</p>
-
-                    <div className="flex gap-6">
-                        <Link href="#" className="hover:text-white">
-                            Terms & Policy
-                        </Link>
-                        <Link href="#" className="hover:text-white">
-                            Privacy Guideline
-                        </Link>
-                    </div>
-                </div>
+              <Link
+                href="#"
+                className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 transition hover:bg-violet-600"
+              >
+                <LogoLinkedin className="h-5 w-5" />
+              </Link>
             </div>
-        </footer>
-    );
+          </div>
+
+          {/* PRODUCT */}
+          <div>
+            <h3 className="mb-6 text-lg font-semibold text-violet-500">
+              Product
+            </h3>
+
+            <ul className="space-y-4 text-gray-400">
+              <li>
+                <Link href="/jobs" className="transition hover:text-white">
+                  Job discovery
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/worker-ai" className="transition hover:text-white">
+                  Worker AI
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/companies" className="transition hover:text-white">
+                  Companies
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/salary" className="transition hover:text-white">
+                  Salary data
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* NAVIGATION */}
+          <div>
+            <h3 className="mb-6 text-lg font-semibold text-violet-500">
+              Navigations
+            </h3>
+
+            <ul className="space-y-4 text-gray-400">
+              <li>
+                <Link
+                  href="/help-center"
+                  className="transition hover:text-white"
+                >
+                  Help center
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/career-library"
+                  className="transition hover:text-white"
+                >
+                  Career library
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/contact" className="transition hover:text-white">
+                  Contact
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* RESOURCES */}
+          <div>
+            <h3 className="mb-6 text-lg font-semibold text-violet-500">
+              Resources
+            </h3>
+
+            <ul className="space-y-4 text-gray-400">
+              <li>
+                <Link
+                  href="/brand-guideline"
+                  className="transition hover:text-white"
+                >
+                  Brand Guideline
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/newsroom" className="transition hover:text-white">
+                  Newsroom
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* BOTTOM */}
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-gray-500 md:flex-row">
+          <p>Copyright 2024 — Hire Loop</p>
+
+          <div className="flex items-center gap-6">
+            <Link href="/terms" className="transition hover:text-white">
+              Terms & Policy
+            </Link>
+
+            <Link href="/privacy" className="transition hover:text-white">
+              Privacy Guideline
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }

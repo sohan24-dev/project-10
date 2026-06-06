@@ -1,188 +1,185 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@heroui/react";
-import { Icon } from "@iconify/react";
-import { useSession, authClient } from "@/lib/auth-client";
-
-const navLinks = [
-    { name: "Browse Jobs", href: "/jobs" },
-    { name: "Companies", href: "/companies" },
-    { name: "Pricing", href: "/pricing" },
-    { name: "Recruiters", href: "/recruiters" },
-    { name: "Contact", href: "/contact" },
-];
+import { useSession, signOut } from "@/lib/auth-client";
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false);
-    const pathname = usePathname();
-    const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
-    const {
-        data: session,
-        isLoading
-    } = useSession()
+  const user = session?.user;
 
-    // IMPORTANT: safe user extraction
-    const user = session?.user ?? null;
-    // console.log(session);
+  const handleSignOut = async () => {
+    await signOut();
 
-    const handleLogout = async () => {
-        try {
-            await authClient.signOut();
+  }
 
-            setIsOpen(false);
+  const navLinks = [
+    {
+      label: "Browse Jobs",
+      href: "/jobs",
+    },
+    {
+      label: "Companies",
+      href: "/companies",
+    },
+    {
+      label: "Pricing",
+      href: "/pricing",
+    },
+  ];
 
-            router.replace("/"); // better than push
-            window.location.reload();    // revalidate server components
+  return (
+    <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0B0B0F]/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* LOGO */}
+        <Link href="/" className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-500 shadow-lg">
+            <span className="text-xl font-bold text-white">P</span>
+          </div>
 
-        } catch (err) {
-            console.error("Logout failed:", err);
-        }
-    };
+          <div className="hidden leading-none sm:block">
+            <h1 className="text-lg font-bold text-white">
+              Hire Loop
+            </h1>
+          </div>
+        </Link>
 
-    return (
-        <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl">
-            <div className="mx-auto max-w-7xl px-4 py-4">
+        {/* RIGHT SIDE */}
+        <div className="flex items-center gap-4">
+          {/* Desktop Menu */}
+          <div className="hidden items-center gap-6 md:flex">
+            {/* Nav Links */}
+            <ul className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-2">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="rounded-full px-4 py-2 text-sm font-medium text-gray-300 transition hover:bg-white/10 hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
 
-                {/* MAIN NAVBAR */}
-                <div className="flex items-center justify-between rounded-2xl bg-content1/80 px-6 py-4 backdrop-blur-xl">
+            {/* Vertical Divider */}
+            <div className="h-6 w-px bg-white/20" />
 
-                    {/* LOGO */}
-                    <Link href="/" className="flex items-center gap-3">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                            <Icon icon="solar:briefcase-business-bold" width="24" height="24" />
-                        </div>
+            {/* Auth Links */}
+            <div className="flex items-center gap-4">
+              {
+                user ?
+                  <>
+                    Hi, {user.name}!
+                    <Button onClick={handleSignOut}
+                      variant="ghost">Sign Out</Button>
+                  </>
+                  :
+                  <Link
+                    href="/auth/signin"
+                    className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
+                  >
+                    Sign In
+                  </Link>}
 
-                        <h1 className="text-xl font-bold">
-                            Hire<span className="text-yellow-400">Loop</span>
-                        </h1>
-                    </Link>
-
-                    {/* DESKTOP NAV */}
-                    <nav className="hidden lg:flex items-center rounded-full bg-default-100 p-1.5 border">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                className={`rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300 ${pathname === link.href
-                                    ? "bg-primary text-white shadow-md"
-                                    : "text-foreground/70 hover:bg-white hover:text-black"
-                                    }`}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
-                    </nav>
-
-                    {/* DESKTOP AUTH */}
-                    <div className="hidden lg:flex items-center gap-3">
-
-                        {/* 🔥 FIX: handle loading state */}
-                        {isLoading ? (
-                            <span className="text-sm text-gray-400">Loading...</span>
-                        ) : user ? (
-                            <>
-                                <span className="text-sm text-foreground/70">
-                                    {user.name}
-                                </span>
-
-                                <Button variant="danger" onPress={handleLogout}>
-                                    Logout
-                                </Button>
-                            </>
-                        ) : (
-                            <>
-                                <Link href="/signup">
-                                    <Button variant="light">
-                                        Sign up
-                                    </Button>
-                                </Link>
-                            </>
-                        )}
-                        <Link href="/register">
-                            <Button color="primary">
-                                Get Started
-                            </Button>
-                        </Link>
-                    </div>
-
-                    {/* MOBILE TOGGLE */}
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="lg:hidden rounded-xl p-2 transition hover:bg-default-100"
-                    >
-                        {isOpen ? (
-                            <Icon icon="solar:close-circle-linear" width="28" height="28" />
-                        ) : (
-                            <Icon icon="solar:hamburger-menu-linear" width="28" height="28" />
-                        )}
-                    </button>
-                </div>
-
-                {/* MOBILE MENU */}
-                <div className={`overflow-hidden transition-all duration-300 lg:hidden ${isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
-                    }`}>
-
-                    <div className="mt-3 rounded-2xl bg-content1 p-4 shadow-lg">
-
-                        {/* LINKS */}
-                        <div className="rounded-2xl bg-default-100 p-2 flex flex-col gap-2">
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    onClick={() => setIsOpen(false)}
-                                    className={`flex items-center justify-between rounded-xl px-4 py-3 font-medium border ${pathname === link.href
-                                        ? "bg-primary text-white"
-                                        : "text-foreground/80 hover:bg-content1 hover:text-primary"
-                                        }`}
-                                >
-                                    <span>{link.name}</span>
-                                    <Icon icon="solar:arrow-right-linear" width={18} height={18} />
-                                </Link>
-                            ))}
-                        </div>
-
-                        {/* MOBILE AUTH */}
-                        <div className="mt-4 flex flex-col gap-3">
-
-                            {isLoading ? (
-                                <span className="text-sm text-gray-400 text-center">
-                                    Loading...
-                                </span>
-                            ) : user ? (
-                                <Button
-                                    color="danger"
-                                    fullWidth
-                                    onPress={handleLogout}
-                                >
-                                    Logout
-                                </Button>
-                            ) : (
-                                <>
-                                    <Link href="/signup" className="w-full">
-                                        <Button variant="light" fullWidth>
-                                            Sign In
-                                        </Button>
-                                    </Link>
-
-                                    <Link href="/register" className="w-full">
-                                        <Button color="primary" fullWidth>
-                                            Get Started
-                                        </Button>
-                                    </Link>
-                                </>
-                            )}
-
-                        </div>
-
-                    </div>
-                </div>
-
+              <Button
+                as={Link}
+                href="/register"
+                radius="lg"
+                className="h-11 bg-white px-6 text-sm font-semibold text-black hover:bg-gray-200"
+              >
+                Get Started
+              </Button>
             </div>
-        </header>
-    );
+          </div>
+
+          {/* MOBILE MENU BUTTON */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="flex items-center justify-center rounded-lg p-2 text-white transition hover:bg-white/10 md:hidden"
+            aria-label="Toggle Menu"
+          >
+            {isMenuOpen ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* MOBILE MENU */}
+      {isMenuOpen && (
+        <div className="border-t border-white/10 bg-[#0B0B0F] md:hidden">
+          <div className="space-y-3 px-4 py-6">
+            {/* Nav Links */}
+            <ul className="space-y-2">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="block rounded-xl px-4 py-3 text-base font-medium text-gray-300 transition hover:bg-white/5 hover:text-white"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {/* Divider */}
+            <div className="border-t border-white/10 pt-4">
+              <div className="flex flex-col gap-3">
+                <Link
+                  href="/login"
+                  className="rounded-xl px-4 py-3 text-base font-medium text-violet-400 transition hover:bg-white/5"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+
+                <Button
+                  as={Link}
+                  href="/register"
+                  className="bg-white font-semibold text-black"
+                  radius="lg"
+                >
+                  Get Started
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
 }
