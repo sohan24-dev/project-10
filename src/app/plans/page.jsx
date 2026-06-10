@@ -27,7 +27,7 @@ const PricingPage = () => {
     const seekerPlans = [
         {
             name: 'Free',
-            id: 'seeker_free',
+            id: 'free',
             price: '$0',
             period: '/forever',
             description: 'Essential features for getting started and organizing your initial search tracking.',
@@ -43,7 +43,7 @@ const PricingPage = () => {
         },
         {
             name: 'Pro',
-            id: 'seeker_pro',
+            id: 'pro',
             price: '$19',
             period: '/month',
             description: 'Our most popular option for serious active candidates looking to rapidly accelerate landing a role.',
@@ -59,7 +59,7 @@ const PricingPage = () => {
         },
         {
             name: 'Premium',
-            id: 'seeker_premium',
+            id: 'premium',
             price: '$39',
             period: '/month',
             description: 'Uncapped potential and priority visibility tools tailored for elite competitive talent placement.',

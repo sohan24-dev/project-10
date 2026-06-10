@@ -4,10 +4,12 @@ import { getUserSession } from "@/lib/core/session";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import JobApply from "./JobApply";
+import { plansById } from "@/lib/api/plans";
 
 const ApplyPage = async ({ params }) => {
     const { id } = await params;
     const user = await getUserSession();
+    console.log("Current user session:", user);
 
     if (!user) {
         redirect(`/auth/signin?callbackUrl=/jobs/${id}/apply`);
@@ -24,10 +26,11 @@ const ApplyPage = async ({ params }) => {
     }
 
     const applications = await getApplicationByApplicant(user.id);
-    const plan = {
-        name: 'Free Plan',
-        maxApplications: 3,
-    }
+    console.log(user.plan)
+
+    const plan = await plansById(user?.plan || "seeker_free");
+    console.log("Current user plan details:", plan);
+
 
     const job = await getJobById(id);
 
@@ -45,7 +48,7 @@ const ApplyPage = async ({ params }) => {
                 {/* Usage Tracker Banner */}
                 <div className="mb-8 rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-800/50">
                     <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-                        You have applied so far: <span className="font-bold text-blue-600 dark:text-blue-400">{applications.length}</span> Out of 3 this month
+                        You have applied so far: <span className="font-bold text-blue-600 dark:text-blue-400">{plan.maximumApplication}</span> Out of 3 this month
                     </h2>
                     <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
                         Purchase a premium plan to apply for more jobs.{" "}
@@ -57,7 +60,7 @@ const ApplyPage = async ({ params }) => {
 
                 {/* Main Application Form Container */}
                 <div className="space-y-6">
-                    {applications.length < plan.maxApplications && (
+                    {applications.length < plan.maximumApplication && (
                         <JobApply applicant={user} job={job} />
                     )}
                 </div>
