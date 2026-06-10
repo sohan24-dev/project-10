@@ -6,6 +6,10 @@ import {
     Magnifier,
     Star,
 } from "@gravity-ui/icons";
+
+const resumeDownloadUrl =
+    "https://drive.google.com/uc?export=download&id=1iD39qnfwBZM9E9nGZLTZTzEOFaxsV6X5";
+
 export default function StatsSection() {
     const stats = [
         {

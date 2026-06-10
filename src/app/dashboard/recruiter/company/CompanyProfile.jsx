@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { 
-    Form, 
-    Fieldset, 
-    TextField, 
-    TextArea, 
-    Label, 
-    Input, 
-    FieldError, 
-    Select, 
-    ListBox, 
-    Button, 
+import {
+    Form,
+    Fieldset,
+    TextField,
+    TextArea,
+    Label,
+    Input,
+    FieldError,
+    Select,
+    ListBox,
+    Button,
     toast
 } from '@heroui/react';
 import { ArrowUpToLine, Globe, Factory, ArrowRight, Pencil, ChevronDown } from '@gravity-ui/icons';
@@ -30,7 +30,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
     const [company, setCompany] = useState(recruiterCompany); // Keeps null initially to showcase empty template structure
     const [isEditing, setIsEditing] = useState(false);
     const [errors, setErrors] = useState({});
-    
+
     // Auxiliary Upload States
     const [logoUrl, setLogoUrl] = useState('');
     const [isUploading, setIsUploading] = useState(false);
@@ -52,13 +52,13 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
 
         try {
             // Replace with your real IMGBB API key environmental variable injection
-            const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API; 
+            const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_KEY;
             const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
                 method: 'POST',
                 body: formData
             });
             const data = await response.json();
-            
+
             if (data.success) {
                 setLogoUrl(data.data.url);
                 setErrors(prev => ({ ...prev, logo: null }));
@@ -76,7 +76,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        
+
         const companyName = formData.get('companyName');
         const websiteUrl = formData.get('websiteUrl');
         const industry = formData.get('industry');
@@ -113,7 +113,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
 
         const payload = await createCompany(newCompanyData);
 
-        if(payload.insertedId) {
+        if (payload.insertedId) {
 
             toast.success("Company profile created successfully!");
         }
@@ -148,7 +148,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
                         To start creating structural job posts and tracking incoming pipelines, configure your workspace profile.
                     </p>
                 </div>
-                <Button 
+                <Button
                     onPress={startRegistration}
                     className="bg-white text-black font-semibold hover:bg-zinc-200 rounded-lg px-6 h-11 transition-all"
                 >
@@ -161,7 +161,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
     // --- SUB-VIEW 2: Render Presentation Dashboard view mode ---
     if (company && !isEditing) {
         const getStatusStyles = (status) => {
-            switch(status) {
+            switch (status) {
                 case 'Approved': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
                 case 'Rejected': return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
                 default: return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
@@ -192,7 +192,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
                             </a>
                         </div>
                     </div>
-                    <Button 
+                    <Button
                         onPress={startEditing}
                         variant="bordered"
                         className="border-zinc-800 text-zinc-300 hover:bg-zinc-900 rounded-lg px-4 font-medium h-10 flex items-center gap-2"
@@ -310,11 +310,11 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
                             <span className="text-zinc-400 font-medium text-sm">Company Logo</span>
                             <div className="flex items-center gap-4 mt-1">
                                 <label className="w-14 h-14 border border-dashed border-zinc-700 hover:border-zinc-500 bg-zinc-900/40 rounded-xl flex flex-col items-center justify-center cursor-pointer transition-colors group relative overflow-hidden">
-                                    <input 
-                                        type="file" 
-                                        accept="image/png, image/jpeg" 
-                                        onChange={handleLogoUpload} 
-                                        className="hidden" 
+                                    <input
+                                        type="file"
+                                        accept="image/png, image/jpeg"
+                                        onChange={handleLogoUpload}
+                                        className="hidden"
                                     />
                                     {logoUrl ? (
                                         <img src={logoUrl} alt="Logo Preview" className="w-full h-full object-cover" />
