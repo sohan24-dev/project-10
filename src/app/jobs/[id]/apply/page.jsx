@@ -48,7 +48,7 @@ const ApplyPage = async ({ params }) => {
                 {/* Usage Tracker Banner */}
                 <div className="mb-8 rounded-lg border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-800/50">
                     <h2 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-                        You have applied so far: <span className="font-bold text-blue-600 dark:text-blue-400">{plan.maximumApplication}</span> Out of 3 this month
+                        You have applied so far: <span className="font-bold text-blue-600 dark:text-blue-400">{applications.length}</span> Out of {plan.maximumApplication} this month
                     </h2>
                     <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
                         Purchase a premium plan to apply for more jobs.{" "}
