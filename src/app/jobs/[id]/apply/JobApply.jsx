@@ -33,6 +33,7 @@ const JobApply = ({ job, applicant }) => {
             applicantId: applicant?.id,
             applicantName: applicant?.name,
             applicantEmail: applicant?.email,
+            status: 'Applied', // Default status for new applications
             ...formData
         };
 
