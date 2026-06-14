@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { admin } from "better-auth/plugins"
 
 const client = new MongoClient(process.env.MONGO_DB_URI);
 const db = client.db("mailestion_10");
@@ -22,5 +23,8 @@ export const auth = betterAuth({
                 default: "seeker_free"
             }
         }
-    }
+    },
+    plugins: [
+        admin()
+    ]
 });
