@@ -9,7 +9,7 @@ export default async function Page({ searchParams }) {
 
   const querySearch = new URLSearchParams(search);
   const queryString = querySearch.toString();
-  const jobs = await getJobs(queryString);
+  const { jobs, total } = await getJobs(queryString);
 
   return (
     <div className="w-full min-h-screen bg-zinc-950 p-6 md:p-12 text-white">
@@ -19,7 +19,7 @@ export default async function Page({ searchParams }) {
       </div>
 
       {/* Pass data to the Client Wrapper to handle filtering interactivity */}
-      <JobListingContainer filters={filterObj} jobs={jobs || []} />
+      <JobListingContainer filters={filterObj} jobs={jobs || []} total={total} />
     </div>
   );
 }
