@@ -1,7 +1,6 @@
 import AdminUsersTable from '@/components/dashbaord/AdminUsersTable';
 import { getUsers } from '@/lib/api/users';
 
-import React from 'react';
 
 
 export default async function AdminUsersPage() {
